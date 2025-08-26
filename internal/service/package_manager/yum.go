@@ -3,9 +3,9 @@ package package_manager
 import (
 	"context"
 	"errors"
-	"github.com/dv-net/dv-updater/pkg/logger"
+	"github.com/dv-net/dv-updater/pkg/logger" //nolint:goimports
 	"os/exec"
-	"strings"
+	"strings" //nolint:goimports
 )
 
 type YumManager struct {

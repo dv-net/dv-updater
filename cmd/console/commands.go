@@ -1,13 +1,13 @@
 package console
 
 import (
-	"fmt"
+	"fmt" //nolint:goimports
 	"github.com/dv-net/dv-updater/internal/app"
 	"github.com/dv-net/dv-updater/internal/config"
 	"github.com/dv-net/dv-updater/internal/distro"
 	"github.com/dv-net/dv-updater/internal/service"
 	"github.com/dv-net/dv-updater/pkg/logger"
-	"os"
+	"os" //nolint:goimports
 
 	"github.com/tkcrm/mx/cfg"
 	"github.com/urfave/cli/v2"

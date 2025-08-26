@@ -4,13 +4,13 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
-	"github.com/dv-net/dv-updater/pkg/logger"
+	"github.com/dv-net/dv-updater/pkg/logger" //nolint:goimports
 	"io"
 	"os"
 	"path"
 	"regexp"
 	"runtime"
-	"strings"
+	"strings" //nolint:goimports
 )
 
 const (

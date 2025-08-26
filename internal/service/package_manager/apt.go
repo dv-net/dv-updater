@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/dv-net/dv-updater/pkg/logger"
+	"github.com/dv-net/dv-updater/pkg/logger" //nolint:goimports
 	"github.com/dv-net/dv-updater/pkg/retry"
 	"os"
 	"os/exec"
@@ -12,7 +12,7 @@ import (
 	"regexp"
 	"strings"
 	"syscall"
-	"time"
+	"time" //nolint:goimports
 )
 
 type AptManager struct {
