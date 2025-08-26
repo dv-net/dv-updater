@@ -1,4 +1,4 @@
-module github.com/dv-net/dv-updater
+module dv-updater
 
 go 1.23.4
 
