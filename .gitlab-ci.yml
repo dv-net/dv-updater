@@ -1,0 +1,194 @@
+# Uncomment bellow when will be fixed
+include:
+  - template: Security/SAST.gitlab-ci.yml
+
+stages:
+  - pre-check
+  - test
+  - build
+  - deploy-dev
+  - release
+  - install-stage
+
+variables:
+  GOOS: linux
+  GOARCH: amd64
+  GOPRIVATE: "maxgit.net/*"
+  BIN_PATH: .bin
+  APP_NAME: dv_updater_linux_amd64
+  FURY_ACCOUNT_DEV: dvnet
+  FURY_ACCOUNT_STABLE: dv-net
+  FURY_ACCOUNT_NIGHTLY: dv-net-nightly
+
+.before_script_common:
+  before_script:
+    - echo "machine ${CI_SERVER_HOST} login gitlab-ci-token password ${CI_JOB_TOKEN}" > ~/.netrc
+    - go env -w "GOPRIVATE=$GOPRIVATE"
+    - export PATH=$PATH:$GOPATH/bin
+
+.with_docker_runner:
+  tags:
+    - dv-docker
+
+#######################
+###    PRE-CHECK    ###
+#######################
+
+sast:
+  extends:
+    - .with_docker_runner
+
+check-existing-tag:
+  stage: pre-check
+  script:
+    - |
+      echo "Checking if other tags exist for commit $CI_COMMIT_SHA"
+      git fetch origin --tags
+      EXISTING_TAGS=$(git tag --points-at "$CI_COMMIT_SHA")
+      if [ -z "$EXISTING_TAGS" ]; then
+        echo "No tags found for commit $CI_COMMIT_SHA"
+        exit 0
+      fi
+      for TAG in $EXISTING_TAGS; do
+        if [ "$TAG" != "$CI_COMMIT_TAG" ]; then
+          echo "Error: Tag $TAG already exists for commit $CI_COMMIT_SHA"
+          exit 1
+        fi
+      done
+      echo "No other tags found for commit $CI_COMMIT_SHA (only $CI_COMMIT_TAG exists)"
+  rules:
+    - if: '$CI_COMMIT_TAG'
+      when: always
+
+###################
+###    TEST     ###
+###################
+
+lint:
+  stage: test
+  image: golangci/golangci-lint:latest
+  extends:
+    - .with_docker_runner
+    - .before_script_common
+  script:
+    - go mod tidy
+    - golangci-lint run
+
+###########
+## Build ##
+###########
+
+build:
+  stage: build
+  image: golang:1.24.0
+  extends:
+    - .with_docker_runner
+    - .before_script_common
+  script:
+    - |
+      TAG=$CI_COMMIT_TAG
+      if [[ "$CI_COMMIT_TAG" == "" ]]; then
+        TAG=$(git describe --tags --abbrev=0 $(git rev-list --tags --skip=1 --max-count=1) 2>/dev/null || echo "unknown")
+      fi
+      echo "commit tag / hash: $TAG-$CI_COMMIT_SHORT_SHA"
+    - GOOS=$GOOS GOARCH=$GOARCH go build -ldflags="-s -w -X main.version=$TAG -X main.commitHash=$CI_COMMIT_SHORT_SHA" -o $BIN_PATH/$APP_NAME ./cmd/app
+  artifacts:
+    name: $APP_NAME
+    expire_in: 7 days
+    paths:
+      - $BIN_PATH/$APP_NAME
+
+############
+## Deploy ##
+############
+.deploy_script: &deploy_script
+  - ls -la $BIN_PATH/
+  - |
+    echo "new service release is:"
+    $BIN_PATH/$APP_NAME -v
+  - |
+    echo "stop service dv-updater.service"
+    sudo systemctl stop dv-updater.service
+  - |
+    echo "copy service to $CI_PROJECT_ROOT_PATH/bin"
+    mkdir -p $CI_PROJECT_ROOT_PATH/bin
+    cp $BIN_PATH/$APP_NAME $CI_PROJECT_ROOT_PATH/bin
+    chmod +x $CI_PROJECT_ROOT_PATH/bin/$APP_NAME
+
+.deploy:
+  stage: deploy-dev
+  extends:
+    - .before_script_common
+  dependencies:
+    - build
+
+stage install:
+  tags:
+    - dv-stage
+  stage: install-stage
+  environment:
+    name: stage
+  when: manual
+  only:
+    - tags
+  script:
+    - sudo yum --repo=dvnet list available --refresh
+    - sudo yum -y install dv-updater
+
+.release:
+  stage: release
+  tags:
+    - dv-docker
+  image:
+    name: goreleaser/goreleaser-pro
+    entrypoint: [ "" ]
+  variables:
+    GIT_DEPTH: 0
+    GITLAB_TOKEN: "$CI_JOB_TOKEN"
+    GORELEASER_KEY: "$CI_GORELEASER_KEY"
+  script:
+    - echo "machine ${CI_SERVER_HOST} login gitlab-ci-token password ${CI_JOB_TOKEN}" > ~/.netrc
+    - goreleaser release --clean
+
+release-rc:
+  extends:
+    - .release
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^(v)(\d+\.)(\d+\.)(\d+)(-RC)(\d+)$/'
+  variables:
+    GIT_DEPTH: 0
+    FURY_ACCOUNT: "$FURY_ACCOUNT_DEV"
+    FURY_TOKEN: "$CI_FURY_TOKEN"
+
+release-stable:
+  extends:
+    - .release
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^(v)(\d+\.)(\d+\.)(\d+)$/'
+  variables:
+    FURY_ACCOUNT: "$FURY_ACCOUNT_STABLE"
+    FURY_TOKEN: "$CI_FURY_TOKEN_PUBLIC"
+
+
+nightly-release:
+  stage: release
+  tags:
+    - dv-docker
+  image:
+    name: goreleaser/goreleaser-pro
+    entrypoint: [ "" ]
+  variables:
+    GIT_DEPTH: 0
+    GITLAB_TOKEN: "$CI_JOB_TOKEN"
+    GORELEASER_KEY: "$CI_GORELEASER_KEY"
+    FURY_ACCOUNT: "$FURY_ACCOUNT_NIGHTLY"
+    FURY_TOKEN: "$CI_FURY_TOKEN_NIGHTLY"
+  script:
+    - echo "machine ${CI_SERVER_HOST} login gitlab-ci-token password ${CI_JOB_TOKEN}" > ~/.netrc
+    - goreleaser release --clean --nightly
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"
+      when: manual
+      allow_failure: true
+    - if: $CI_PIPELINE_SOURCE == "pipeline"
+      when: on_success
