@@ -1,0 +1,18 @@
+[Unit]
+Description=DV Updater Service
+After=network.target
+Documentation=man:dv-updater(8)
+
+[Service]
+Type=simple
+ExecStart=/home/dv/updater/dv-updater start
+ExecStop=/bin/kill -TERM $MAINPID
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+KillMode=process
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target
