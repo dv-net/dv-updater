@@ -1,11 +1,11 @@
-version: 1
+version: 2
 
-release:
-  gitlab:
-    owner: dv
-    name: dv-updater
-  ids: [ ]
-  mode: replace
+#release:
+#  gitlab:
+#    owner: dv
+#    name: dv-updater
+#  ids: [ ]
+#  mode: replace
 
 builds:
   - id: "dv-updater"
