@@ -3,11 +3,11 @@ package handler
 import (
 	"errors"
 
-	"dv-updater/internal/http/request"
-	"dv-updater/internal/http/response"
-	"dv-updater/internal/service"
-	"dv-updater/internal/service/package_manager"
-	"dv-updater/pkg/logger"
+	"github.com/dv-net/dv-updater/internal/http/request"
+	"github.com/dv-net/dv-updater/internal/http/response"
+	"github.com/dv-net/dv-updater/internal/service"
+	"github.com/dv-net/dv-updater/internal/service/package_manager"
+	"github.com/dv-net/dv-updater/pkg/logger"
 
 	"github.com/gofiber/fiber/v3"
 )

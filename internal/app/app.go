@@ -2,12 +2,12 @@ package app
 
 import (
 	"context"
-	"dv-updater/internal/config"
-	"dv-updater/internal/distro"
-	"dv-updater/internal/server"
-	"dv-updater/internal/service"
-	"dv-updater/pkg/logger"
 	"errors"
+	"github.com/dv-net/dv-updater/internal/config"
+	"github.com/dv-net/dv-updater/internal/distro"
+	"github.com/dv-net/dv-updater/internal/server"
+	"github.com/dv-net/dv-updater/internal/service"
+	"github.com/dv-net/dv-updater/pkg/logger"
 	"net/http"
 )
 

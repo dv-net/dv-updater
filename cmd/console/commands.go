@@ -1,12 +1,12 @@
 package console
 
 import (
-	"dv-updater/internal/app"
-	"dv-updater/internal/config"
-	"dv-updater/internal/distro"
-	"dv-updater/internal/service"
-	"dv-updater/pkg/logger"
 	"fmt"
+	"github.com/dv-net/dv-updater/internal/app"
+	"github.com/dv-net/dv-updater/internal/config"
+	"github.com/dv-net/dv-updater/internal/distro"
+	"github.com/dv-net/dv-updater/internal/service"
+	"github.com/dv-net/dv-updater/pkg/logger"
 	"os"
 
 	"github.com/tkcrm/mx/cfg"

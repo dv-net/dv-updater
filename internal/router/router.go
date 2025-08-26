@@ -1,10 +1,10 @@
 package router
 
 import (
-	"dv-updater/internal/config"
-	"dv-updater/internal/http/handler"
-	"dv-updater/internal/service"
-	"dv-updater/pkg/logger"
+	"github.com/dv-net/dv-updater/internal/config"
+	"github.com/dv-net/dv-updater/internal/http/handler"
+	"github.com/dv-net/dv-updater/internal/service"
+	"github.com/dv-net/dv-updater/pkg/logger"
 
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/cors"

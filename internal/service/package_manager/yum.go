@@ -2,8 +2,8 @@ package package_manager
 
 import (
 	"context"
-	"dv-updater/pkg/logger"
 	"errors"
+	"github.com/dv-net/dv-updater/pkg/logger"
 	"os/exec"
 	"strings"
 )

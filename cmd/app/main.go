@@ -5,7 +5,7 @@ import (
 	"os"
 	"runtime"
 
-	"dv-updater/cmd/console"
+	"github.com/dv-net/dv-updater/cmd/console"
 
 	"github.com/urfave/cli/v2"
 )

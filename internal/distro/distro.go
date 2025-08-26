@@ -2,9 +2,9 @@ package distro
 
 import (
 	"bufio"
-	"dv-updater/pkg/logger"
 	"errors"
 	"fmt"
+	"github.com/dv-net/dv-updater/pkg/logger"
 	"io"
 	"os"
 	"path"

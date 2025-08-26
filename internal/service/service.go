@@ -1,12 +1,12 @@
 package service
 
 import (
-	"dv-updater/internal/distro"
-	"dv-updater/internal/service/package_manager"
-	systeminfo "dv-updater/internal/service/system_info"
-	"dv-updater/pkg/logger"
 	"errors"
 	"fmt"
+	"github.com/dv-net/dv-updater/internal/distro"
+	"github.com/dv-net/dv-updater/internal/service/package_manager"
+	systeminfo "github.com/dv-net/dv-updater/internal/service/system_info"
+	"github.com/dv-net/dv-updater/pkg/logger"
 )
 
 const (

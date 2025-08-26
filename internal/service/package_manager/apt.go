@@ -2,10 +2,10 @@ package package_manager
 
 import (
 	"context"
-	"dv-updater/pkg/logger"
-	"dv-updater/pkg/retry"
 	"errors"
 	"fmt"
+	"github.com/dv-net/dv-updater/pkg/logger"
+	"github.com/dv-net/dv-updater/pkg/retry"
 	"os"
 	"os/exec"
 	"path/filepath"

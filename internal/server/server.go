@@ -1,10 +1,10 @@
 package server
 
 import (
-	"dv-updater/internal/config"
-	"dv-updater/internal/router"
-	"dv-updater/internal/service"
-	"dv-updater/pkg/logger"
+	"github.com/dv-net/dv-updater/internal/config"
+	"github.com/dv-net/dv-updater/internal/router"
+	"github.com/dv-net/dv-updater/internal/service"
+	"github.com/dv-net/dv-updater/pkg/logger"
 
 	"github.com/gofiber/fiber/v3"
 )
