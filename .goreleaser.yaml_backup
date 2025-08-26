@@ -17,6 +17,7 @@ builds:
       - amd64
     env:
       - CGO_ENABLED=1
+      - GOPRIVATE=maxgit.net
       - CC=gcc
 
     ldflags:
@@ -62,3 +63,6 @@ furies:
   - ids:
       - dv-updater
 
+nightly:
+  publish_release: false
+  name_template: '{{ .Tag }}-nightly-{{ .Now.Format "20060102T150405Z" }}'
