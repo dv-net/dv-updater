@@ -75,11 +75,11 @@ func (y *YumManager) SearchPackage(ctx context.Context, packageName string) ([]s
 		return nil, err
 	}
 
-	// Разделяем вывод на строки
+	// Splits strings
 	lines := strings.Split(string(out), "\n")
 	var results []string
 
-	// Фильтруем строки, оставляя только названия пакетов
+	// Filter package names only
 	for _, line := range lines {
 		if strings.HasPrefix(line, " ") && strings.Contains(line, ".") {
 			results = append(results, strings.Fields(line)[0])
