@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Move to GitHub [DV-2557]
+
 ## [0.0.12] - 2025-08-26
 
 - Git tags with same commit hash fixed [DV-2557]
@@ -23,7 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Apt rework [DV-2163]
 
 ## [0.0.8] - 2025-05-07
-- Auto-update [DV-1937](https://maxta.sk/issue/DV-1937)
+- Auto-update [DV-1937]
 
 ## [0.0.7] - 2025-04-10
 
