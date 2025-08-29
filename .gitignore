@@ -7,3 +7,4 @@ vendor
 *config.yaml
 .netrc
 .tmp
+artifacts/.release-notes/*
