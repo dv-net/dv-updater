@@ -33,13 +33,13 @@ jobs:
             echo "No tags found for commit ${{ github.sha }}"
             exit 0
           fi
-#          for TAG in $EXISTING_TAGS; do
-#            if [ "$TAG" != "${{  github.ref_name }}" ]; then
-#              echo "Error: Tag $TAG already exists for commit ${{ github.sha }}"
-#              exit 1
-#            fi
-#          done
-#          echo "No other tags found for commit ${{ github.sha }} (only ${{  github.ref_name }} exists)"
+          for TAG in $EXISTING_TAGS; do
+            if [ "$TAG" != "${{  github.ref_name }}" ]; then
+              echo "Error: Tag $TAG already exists for commit ${{ github.sha }}"
+              exit 1
+            fi
+          done
+          echo "No other tags found for commit ${{ github.sha }} (only ${{  github.ref_name }} exists)"
 
 #
 #      - name: Set up Go
