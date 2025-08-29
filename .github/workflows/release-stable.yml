@@ -22,6 +22,9 @@ jobs:
       - name: Clean dist
         run: rm -rf dist/*
 
+      - name: Prepare Release Notes
+        run: awk '/## \[/{flag=1;if(++i>1)exit;print;next;}/##/{flag=0;}flag' CHANGELOG.md >> artifacts/.release-notes/NOTES.md
+
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v6
         with:

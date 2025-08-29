@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-- Move to GitHub [DV-2557]
+- Git tags with same commit hash fixed [DV-2557]
 
 ## [0.0.12] - 2025-08-26
 
