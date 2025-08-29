@@ -24,7 +24,7 @@ jobs:
         run: |
           echo "Checking if other tags exist for commit ${{ github.sha }}"
           git status
-#          git fetch origin --tags
+          git fetch origin --tags
 #          echo (git tag --points-at ${{ github.sha }}")
 #          EXISTING_TAGS=$(git tag --points-at ${{ github.sha }}")
 #          echo "$EXISTING_TAGS
