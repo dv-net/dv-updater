@@ -1,12 +1,5 @@
 version: 2
 
-#release:
-#  gitlab:
-#    owner: dv
-#    name: dv-updater
-#  ids: [ ]
-#  mode: replace
-
 builds:
   - id: "dv-updater"
     main: "./cmd/app"
@@ -23,13 +16,8 @@ builds:
       - -installsuffix cgo
       - -s -w -X main.version={{.Tag}} -X main.commitHash={{.ShortCommit}}
 
-gitlab_urls:
-  api: https://maxgit.net/api/v4/
-  download: https://maxgit.net
-
-  skip_tls_verify: false
-  use_package_registry: false
-  use_job_token: true
+checksum:
+  algorithm: sha1
 
 nfpms:
   - id: "dv-updater"
