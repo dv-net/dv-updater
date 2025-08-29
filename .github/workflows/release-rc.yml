@@ -26,7 +26,7 @@ jobs:
           git status
           git fetch origin --tags
           git tag --points-at "${{ github.sha }}"
-          echo (git tag --points-at "${{ github.sha }}")
+          echo $(git tag --points-at "${{ github.sha }}")
 #          EXISTING_TAGS=$(git tag --points-at ${{ github.sha }}")
 #          echo "$EXISTING_TAGS
 #          if [ -z "$EXISTING_TAGS" ]; then
