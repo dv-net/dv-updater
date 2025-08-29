@@ -29,10 +29,10 @@ jobs:
           echo $(git tag --points-at "${{ github.sha }}")
           EXISTING_TAGS=$(git tag --points-at "${{ github.sha }}")
 #          echo "$EXISTING_TAGS"
-          if [ -z "$EXISTING_TAGS" ]; then
-            echo "No tags found for commit ${{ github.sha }}"
-            exit 0
-          fi
+#          if [ -z "$EXISTING_TAGS" ]; then
+#            echo "No tags found for commit ${{ github.sha }}"
+#            exit 0
+#          fi
 #          for TAG in $EXISTING_TAGS; do
 #            if [ "$TAG" != "${{  github.ref_name }}" ]; then
 #              echo "Error: Tag $TAG already exists for commit ${{ github.sha }}"
