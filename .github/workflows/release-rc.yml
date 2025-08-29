@@ -14,12 +14,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: GitHub Tag Name example
-        run: |
-          echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
-          echo "Tag name from github.ref_name: ${{  github.ref_name }}"
-          echo "SHA from github.sha: ${{ github.sha }}"
-
       - name: Checking for existence of tag with current SHA
         run: |
           echo "Checking if other tags exist for commit ${{ github.sha }}"

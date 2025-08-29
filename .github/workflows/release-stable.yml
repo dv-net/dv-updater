@@ -14,6 +14,23 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Checking for existence of tag with current SHA
+        run: |
+          echo "Checking if other tags exist for commit ${{ github.sha }}"
+          git fetch origin --tags
+          EXISTING_TAGS=$(git tag --points-at "${{ github.sha }}")
+          if [ -z "$EXISTING_TAGS" ]; then
+            echo "No tags found for commit ${{ github.sha }}"
+            exit 0
+          fi
+          for TAG in $EXISTING_TAGS; do
+            if [ "$TAG" != "${{  github.ref_name }}" ]; then
+              echo "Error: Tag $TAG already exists for commit ${{ github.sha }}"
+              exit 1
+            fi
+          done
+          echo "No other tags found for commit ${{ github.sha }} (only ${{  github.ref_name }} exists)"
+
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
