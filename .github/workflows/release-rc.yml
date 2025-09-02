@@ -57,6 +57,7 @@ jobs:
           distribution: goreleaser-pro
           args: release --clean --release-notes=artifacts/.release-notes/NOTES.md
         env:
+          GPG_FINGERPRINT: ${{ secrets.GPG_FINGERPRINT }}
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
           FURY_ACCOUNT: ${{ secrets.FURY_ACCOUNT_RC }}
