@@ -49,9 +49,7 @@ jobs:
 
       - name: Prepare GPG keys
         run: |
-            gpg -K
             gpg --export-secret-keys --armor --output artifacts/.keys/private.asc
-            ls ~
 
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v6

@@ -40,6 +40,10 @@ nfpms:
     rpm:
       signature:
         key_file:  artifacts/.keys/private.asc
+    deb:
+      signature:
+        key_file: artifacts/.keys/private.asc
+#        key_id: {{ .Env.GPG_FINGERPRINT }}
 
 archives:
   - id: "dv-updater"
