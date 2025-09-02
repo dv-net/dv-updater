@@ -47,8 +47,11 @@ jobs:
         with:
           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
 
-      - name: List keys
-        run: gpg -K
+      - name: Prepare GPG keys
+        run: |
+            gpg -K
+            gpg --export-secret-keys --armor --output ~/private.asc
+            ls ~
 
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v6
@@ -62,3 +65,8 @@ jobs:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
           FURY_ACCOUNT: ${{ secrets.FURY_ACCOUNT_RC }}
           FURY_TOKEN: ${{ secrets.FURY_TOKEN_RC }}
+
+      - name: Remove GPG keys
+        run: |
+          rm ~/private.asc
+          ls ~
