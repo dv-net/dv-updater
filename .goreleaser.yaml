@@ -42,6 +42,10 @@ archives:
   - id: "dv-updater"
     format: binary
 
+signs:
+  - artifacts: checksum
+    args: ["--batch", "-u", "{{ .Env.GPG_FINGERPRINT }}", "--output", "${signature}", "--detach-sign", "${artifact}"]
+
 furies:
   - account: "{{ .Env.FURY_ACCOUNT }}"
   - formats:

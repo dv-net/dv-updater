@@ -42,14 +42,22 @@ jobs:
       - name: Prepare Release Notes
         run: awk '/## Unreleased/{flag=1;print;next}/##/{flag=0}flag' CHANGELOG.md >> artifacts/.release-notes/NOTES.md
 
-      - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v6
+      - name: Import GPG keys
+        uses: crazy-max/ghaction-import-gpg@v6
         with:
-          version: latest
-          distribution: goreleaser-pro
-          args: release --clean --release-notes=artifacts/.release-notes/NOTES.md
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
-          FURY_ACCOUNT: ${{ secrets.FURY_ACCOUNT_RC }}
-          FURY_TOKEN: ${{ secrets.FURY_TOKEN_RC }}
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+
+      - name: List keys
+        run: gpg -K
+
+#      - name: Run GoReleaser
+#        uses: goreleaser/goreleaser-action@v6
+#        with:
+#          version: latest
+#          distribution: goreleaser-pro
+#          args: release --clean --release-notes=artifacts/.release-notes/NOTES.md
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+#          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
+#          FURY_ACCOUNT: ${{ secrets.FURY_ACCOUNT_RC }}
+#          FURY_TOKEN: ${{ secrets.FURY_TOKEN_RC }}
