@@ -50,7 +50,7 @@ jobs:
       - name: Prepare GPG keys
         run: |
             gpg -K
-            gpg --export-secret-keys --armor --output ~/private.asc
+            gpg --export-secret-keys --armor --output artifacts/.keys/private.asc
             ls ~
 
       - name: Run GoReleaser
@@ -68,5 +68,5 @@ jobs:
 
       - name: Remove GPG keys
         run: |
-          rm ~/private.asc
+          rm artifacts/.keys/private.asc
           ls ~

@@ -39,7 +39,7 @@ nfpms:
       postremove: "artifacts/scripts/postremove.sh"
     rpm:
       signature:
-        key_file:  ~/private.asc
+        key_file:  artifacts/.keys/private.asc
 
 archives:
   - id: "dv-updater"
