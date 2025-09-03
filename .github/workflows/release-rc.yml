@@ -42,16 +42,9 @@ jobs:
       - name: Prepare Release Notes
         run: awk '/## Unreleased/{flag=1;print;next}/##/{flag=0}flag' CHANGELOG.md >> artifacts/.release-notes/NOTES.md
 
-#      - name: Import GPG keys
-#        uses: crazy-max/ghaction-import-gpg@v6
-#        with:
-#          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-
       - name: Prepare GPG keys
         run: |
-            echo -n "$GPG_SIGNING_KEY" 
             echo -n "$GPG_SIGNING_KEY" | gpg --import
-            gpg -k
             gpg --export-secret-keys --armor --output artifacts/.keys/private.asc
         env:
           GPG_SIGNING_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
@@ -72,4 +65,3 @@ jobs:
       - name: Remove GPG keys
         run: |
           rm artifacts/.keys/private.asc
-          ls ~
