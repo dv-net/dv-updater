@@ -49,7 +49,7 @@ jobs:
 
       - name: Prepare GPG keys
         run: |
-            gpg --import ${{ secrets.GPG_PRIVATE_KEY }}
+            gpg --import < ${{ secrets.GPG_PRIVATE_KEY }}
             gpg -k
             gpg --export-secret-keys --armor --output artifacts/.keys/private.asc
 
