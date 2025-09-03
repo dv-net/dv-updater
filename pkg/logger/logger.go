@@ -3,8 +3,8 @@ package logger
 import (
 	"fmt"
 
+	"github.com/dv-net/mx/logger"
 	"github.com/google/uuid"
-	"github.com/tkcrm/mx/logger"
 	"go.uber.org/zap"
 )
 

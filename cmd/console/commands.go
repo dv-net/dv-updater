@@ -1,16 +1,23 @@
 package console
 
 import (
-	"fmt" //nolint:goimports
+	"bytes"
+	"fmt"
+	"os"
+
 	"github.com/dv-net/dv-updater/internal/app"
 	"github.com/dv-net/dv-updater/internal/config"
 	"github.com/dv-net/dv-updater/internal/distro"
 	"github.com/dv-net/dv-updater/internal/service"
 	"github.com/dv-net/dv-updater/pkg/logger"
-	"os" //nolint:goimports
+	"github.com/dv-net/xconfig"
+	"github.com/goccy/go-yaml"
 
-	"github.com/tkcrm/mx/cfg"
 	"github.com/urfave/cli/v2"
+)
+
+const (
+	envPrefix = "UPDATER"
 )
 
 func InitCommands(currentAppVersion, currentAppCommitHash string) []*cli.Command {
@@ -79,26 +86,27 @@ func prepareConfigCommands() []*cli.Command {
 			Name:  "genenvs",
 			Usage: "generate markdown for all envs and config yaml template",
 			Action: func(_ *cli.Context) error {
-				if err := cfg.GenerateMarkdown(new(config.Config), "ENVS.md"); err != nil {
+				conf := new(config.Config)
+				envMarkdown, err := xconfig.GenerateMarkdown(conf, xconfig.WithEnvPrefix(envPrefix))
+				if err != nil {
 					return fmt.Errorf("failed to generate markdown: %w", err)
 				}
-
-				if err := cfg.GenerateYamlTemplate(new(config.Config), "configs/config.template.yaml"); err != nil {
-					return fmt.Errorf("failed to generate yaml template: %w", err)
-				}
-				return nil
-			},
-		},
-		{
-			Name:  "flags",
-			Usage: "print available config flags",
-			Action: func(_ *cli.Context) error {
-				res, err := cfg.GenerateFlags(new(config.Config))
-				if err != nil {
+				envMarkdown = fmt.Sprintf("# Environment variables\n\nAll envs have prefix `%s_`\n\n%s", envPrefix, envMarkdown)
+				if err := os.WriteFile("ENVS.md", []byte(envMarkdown), 0o600); err != nil {
 					return err
 				}
 
-				fmt.Println(res)
+				buf := bytes.NewBuffer(nil)
+				enc := yaml.NewEncoder(buf, yaml.Indent(2))
+				defer enc.Close()
+
+				if err := enc.Encode(conf); err != nil {
+					return fmt.Errorf("failed to encode yaml: %w", err)
+				}
+
+				if err := os.WriteFile("configs/config.template.yaml", buf.Bytes(), 0o600); err != nil {
+					return fmt.Errorf("failed to write file: %w", err)
+				}
 
 				return nil
 			},
@@ -106,17 +114,10 @@ func prepareConfigCommands() []*cli.Command {
 	}
 }
 
-func loadConfig(args, configPaths []string) (*config.Config, error) {
-	conf := new(config.Config)
-	if err := cfg.Load(conf,
-		cfg.WithLoaderConfig(cfg.Config{
-			Args:       args,
-			Files:      configPaths,
-			MergeFiles: true,
-			SkipFiles:  true,
-		}),
-	); err != nil {
-		return nil, fmt.Errorf("failed to load configuration: %w", err)
+func loadConfig(_, configPaths []string) (*config.Config, error) {
+	conf, err := config.Load[config.Config](configPaths, envPrefix)
+	if err != nil {
+		return nil, fmt.Errorf("failed to load config: %w", err)
 	}
 
 	return conf, nil
