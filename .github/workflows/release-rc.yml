@@ -49,9 +49,11 @@ jobs:
 
       - name: Prepare GPG keys
         run: |
-            gpg --import < ${{ secrets.GPG_PRIVATE_KEY }}
+            echo -n "$GPG_SIGNING_KEY" | gpg --import
             gpg -k
             gpg --export-secret-keys --armor --output artifacts/.keys/private.asc
+        env:
+          GPG_SIGNING_KEY: ${{ secrets.GPG_SIGNING_KEY }}
 
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v6
