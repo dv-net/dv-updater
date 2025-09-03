@@ -54,7 +54,7 @@ jobs:
             gpg -k
             gpg --export-secret-keys --armor --output artifacts/.keys/private.asc
         env:
-          GPG_SIGNING_KEY: ${{ secrets.GPG_SIGNING_KEY }}
+          GPG_SIGNING_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
 
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v6
