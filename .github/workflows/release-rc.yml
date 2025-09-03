@@ -42,13 +42,15 @@ jobs:
       - name: Prepare Release Notes
         run: awk '/## Unreleased/{flag=1;print;next}/##/{flag=0}flag' CHANGELOG.md >> artifacts/.release-notes/NOTES.md
 
-      - name: Import GPG keys
-        uses: crazy-max/ghaction-import-gpg@v6
-        with:
-          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+#      - name: Import GPG keys
+#        uses: crazy-max/ghaction-import-gpg@v6
+#        with:
+#          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
 
       - name: Prepare GPG keys
         run: |
+            gpg --import ${{ secrets.GPG_PRIVATE_KEY }}
+            gpg -k
             gpg --export-secret-keys --armor --output artifacts/.keys/private.asc
 
       - name: Run GoReleaser
