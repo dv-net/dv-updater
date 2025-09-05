@@ -2,7 +2,8 @@ package service
 
 import (
 	"errors"
-	"fmt" //nolint:goimports
+	"fmt"
+
 	"github.com/dv-net/dv-updater/internal/distro"
 	"github.com/dv-net/dv-updater/internal/service/package_manager"
 	systeminfo "github.com/dv-net/dv-updater/internal/service/system_info"

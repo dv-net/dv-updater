@@ -3,7 +3,7 @@ package config
 import (
 	"time"
 
-	"github.com/tkcrm/mx/logger"
+	"github.com/dv-net/mx/logger"
 )
 
 type (

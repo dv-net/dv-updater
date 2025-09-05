@@ -2,11 +2,12 @@ package app
 
 import (
 	"context"
-	"errors" //nolint:goimports
+	"errors"
+	"time"
+
 	"github.com/dv-net/dv-updater/internal/config"
 	"github.com/dv-net/dv-updater/internal/service"
 	"github.com/dv-net/dv-updater/pkg/logger"
-	"time" //nolint:goimports
 )
 
 func initTickers(ctx context.Context, s *service.Services, l logger.Logger, conf *config.AutoUpdateConfig) error {

@@ -2,13 +2,14 @@ package app
 
 import (
 	"context"
-	"errors" //nolint:goimports
+	"errors"
+	"net/http"
+
 	"github.com/dv-net/dv-updater/internal/config"
 	"github.com/dv-net/dv-updater/internal/distro"
 	"github.com/dv-net/dv-updater/internal/server"
 	"github.com/dv-net/dv-updater/internal/service"
 	"github.com/dv-net/dv-updater/pkg/logger"
-	"net/http" //nolint:goimports
 )
 
 func Run(ctx context.Context, conf *config.Config, l logger.Logger, currentAppVersion, currentAppCommitHash string) error {
