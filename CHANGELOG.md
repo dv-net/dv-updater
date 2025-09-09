@@ -36,3 +36,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added stable repo publish [DV-955]
 - CI/CD + goreleaser config [DV-1327]
+- 
