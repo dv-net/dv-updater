@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Sign packages with GPG [DV-3298]
 - Prepare to public release [DV-3247]
 
 ## [0.0.12] - 2025-08-26

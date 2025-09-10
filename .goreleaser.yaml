@@ -9,7 +9,7 @@ builds:
     goarch:
       - amd64
     env:
-      - CGO_ENABLED=1
+      - CGO_ENABLED=0
       - CC=gcc
 
     ldflags:
@@ -37,10 +37,24 @@ nfpms:
       postinstall: "artifacts/scripts/postinstall.sh"
       preremove: "artifacts/scripts/preremove.sh"
       postremove: "artifacts/scripts/postremove.sh"
+    rpm:
+      signature:
+        key_file:  artifacts/.keys/private.asc
+    deb:
+      signature:
+        key_file: artifacts/.keys/private.asc
+#        key_id: {{ .Env.GPG_FINGERPRINT }}
 
 archives:
   - id: "dv-updater"
     format: binary
+
+
+
+
+signs:
+  - artifacts: all
+    args: ["--batch", "-u", "{{ .Env.GPG_FINGERPRINT }}", "--output", "${signature}", "--detach-sign", "${artifact}"]
 
 furies:
   - account: "{{ .Env.FURY_ACCOUNT }}"
@@ -49,4 +63,3 @@ furies:
       - deb
   - ids:
       - dv-updater
-

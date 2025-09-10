@@ -8,3 +8,4 @@ vendor
 .netrc
 .tmp
 artifacts/.release-notes/*
+artifacts/.keys/*
