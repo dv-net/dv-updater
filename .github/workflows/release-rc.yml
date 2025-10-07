@@ -65,3 +65,9 @@ jobs:
       - name: Remove GPG keys
         run: |
           rm artifacts/.keys/private.asc
+
+      - name: Init e2e tests
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: ${{ secrets.E2E_INIT_TRIGGER_URL }}
+          method: 'POST'
