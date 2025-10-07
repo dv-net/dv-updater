@@ -10,10 +10,8 @@ jobs:
 
     steps:
       - name: Init e2e tests
-        env:
-          url: ${{ secrets.E2E_INIT_TRIGGER_URL }}
         run: |
-          curl --request POST  --url '"$url"'
+          curl --request POST  --url '${{ secrets.E2E_INIT_TRIGGER_URL }}'
 
 #      - name: Checkout code
 #        uses: actions/checkout@v4
