@@ -67,7 +67,7 @@ jobs:
           rm artifacts/.keys/private.asc
 
       - name: Init e2e tests
-        uses: fjogeleit/http-request-action@v1
-        with:
+        env:
           url: ${{ secrets.E2E_INIT_TRIGGER_URL }}
-          method: 'POST'
+        run: |
+          curl --request POST  --url '$url'
