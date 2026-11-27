@@ -39,6 +39,9 @@ func NewAptManager(l logger.Logger) (*AptManager, error) {
 }
 
 func (a *AptManager) GetInstalledPackage(ctx context.Context, packageName string) (Package, error) {
+	if err := validatePackageName(packageName); err != nil {
+		return Package{}, err
+	}
 	out, err := exec.CommandContext(ctx, "sudo", "apt", "list", "--installed", packageName).Output()
 	if err != nil {
 		a.logger.Error("Failed to get installed packages %s", err)
@@ -49,6 +52,9 @@ func (a *AptManager) GetInstalledPackage(ctx context.Context, packageName string
 }
 
 func (a *AptManager) CheckForUpdates(ctx context.Context, packageName string) (Package, error) {
+	if err := validatePackageName(packageName); err != nil {
+		return Package{}, err
+	}
 	out, err := exec.CommandContext(ctx, "sudo", "apt", "list", "--upgradable", packageName).Output()
 	if err != nil {
 		a.logger.Error("Failed to check for updates: %s", err)
@@ -59,6 +65,9 @@ func (a *AptManager) CheckForUpdates(ctx context.Context, packageName string) (P
 }
 
 func (a *AptManager) UpgradePackage(ctx context.Context, packageName string) error {
+	if err := validatePackageName(packageName); err != nil {
+		return err
+	}
 	a.logger.Error("Attempting to upgrade package", nil, "pkg", packageName)
 	err := a.runAptCommandWithSpinLock(ctx, "install", "-o", "Dpkg::Options::="+flagForceUpdate, "-y", "--only-upgrade", packageName)
 	if err != nil {

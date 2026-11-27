@@ -1,6 +1,8 @@
 package server
 
 import (
+	"net"
+
 	"github.com/dv-net/dv-updater/internal/config"
 	"github.com/dv-net/dv-updater/internal/router"
 	"github.com/dv-net/dv-updater/internal/service"
@@ -31,7 +33,9 @@ func NewServer(cfg config.HTTPConfig, services *service.Services, logger logger.
 }
 
 func (s *Server) Run() error {
-	return s.app.Listen(":"+s.cfg.Port, fiber.ListenConfig{
+	// Listen on the configured host only (localhost by default): the API runs package upgrades as root
+	// and is meant for the local merchant and processing services, not for the network.
+	return s.app.Listen(net.JoinHostPort(s.cfg.Host, s.cfg.Port), fiber.ListenConfig{
 		DisableStartupMessage: true,
 	})
 }

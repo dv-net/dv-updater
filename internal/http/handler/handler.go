@@ -38,6 +38,13 @@ func (h *Handler) updatePackage(c fiber.Ctx) error {
 		return err
 	}
 
+	// The validate tag on UpdatePackageRequest is not enforced: the fiber app has no StructValidator,
+	// so the name is checked here. It is passed to sudo yum/apt, and any other value (an option, a URL
+	// or a file path) would let the caller run a package's scriptlets as root.
+	if err := service.ValidateServiceName(req.Name); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(response.Fail(fiber.StatusBadRequest, "name is invalid"))
+	}
+
 	err := h.services.PackageManager.UpgradePackage(c.Context(), req.Name)
 	if err != nil {
 		return c.JSON(response.Fail(fiber.StatusInternalServerError, err.Error()))

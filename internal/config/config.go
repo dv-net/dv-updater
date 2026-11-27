@@ -19,7 +19,7 @@ type (
 	}
 
 	HTTPCorsConfig struct {
-		Enabled        bool     `yaml:"enabled" default:"true" usage:"allows to disable cors" example:"true / false"`
+		Enabled        bool     `yaml:"enabled" default:"false" usage:"allows to enable cors" example:"true / false"`
 		AllowedOrigins []string `yaml:"allowed_origins"`
 	}
 
