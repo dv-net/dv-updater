@@ -20,6 +20,9 @@ func NewYumManager(log logger.Logger) *YumManager {
 }
 
 func (y *YumManager) GetInstalledPackage(ctx context.Context, packageName string) (Package, error) {
+	if err := validatePackageName(packageName); err != nil {
+		return Package{}, err
+	}
 	// sudo yum list installed
 	out, err := exec.CommandContext(ctx, "sudo", "yum", "list", "installed", packageName).Output()
 	if err != nil {
@@ -31,6 +34,9 @@ func (y *YumManager) GetInstalledPackage(ctx context.Context, packageName string
 }
 
 func (y *YumManager) CheckForUpdates(ctx context.Context, packageName string) (Package, error) {
+	if err := validatePackageName(packageName); err != nil {
+		return Package{}, err
+	}
 	// sudo yum --repo=dvnet list --refresh
 	out, err := exec.CommandContext(ctx, "sudo", "yum", "--repo=dvnet", "list", "--refresh", packageName).Output()
 	if err != nil {
@@ -42,6 +48,9 @@ func (y *YumManager) CheckForUpdates(ctx context.Context, packageName string) (P
 }
 
 func (y *YumManager) UpgradePackage(ctx context.Context, packageName string) error {
+	if err := validatePackageName(packageName); err != nil {
+		return err
+	}
 	y.logger.Info("start Updating repository")
 	out, err := exec.CommandContext(ctx, "sudo", "yum", "--repo", "dvnet", "update", "-y", packageName).Output()
 	if err != nil {
